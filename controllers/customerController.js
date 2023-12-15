@@ -61,13 +61,15 @@ exports.placeOrder = async (req, res) => {
       productId: item.productId._id,
       quantity: item.quantity,
       price: item.productId.price * item.quantity,
+      name:item.productId.name,
+      imageLink:item.productId.imageLink
     }));
 
     // Create a new order
     const newOrder = new Order({
       userId,
       items: orderItems,
-      // Add more order details as needed
+
     });
 
     // Save the order and clear the user's cart
@@ -77,6 +79,17 @@ exports.placeOrder = async (req, res) => {
     res.json({ message: 'Order placed successfully', order: newOrder });
   } catch (error) {
     console.error('Error placing order:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+exports.getUserOrders = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const orders = await Order.find({ userId: userId });
+    res.json(orders);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

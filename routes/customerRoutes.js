@@ -10,4 +10,6 @@ router.get('/cart/:userId', customerController.getUserCart);
 
 router.post('/cart/place-order', customerController.placeOrder);
 
+router.get('/user-orders/:userId', customerController.getUserOrders);
+
 module.exports = router;
